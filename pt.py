@@ -71,13 +71,15 @@ class Solution:
             probability_selective.append(i / self.n)
             
         print(f'\n\probability:\n{probability}')      
-        print(f'probability_selective:\n{probability_selective}\n')     
+        print(f'probability_selective:\n{probability_selective}\n')  
+        print(f'sum_probability:{sum(probability)}\n\n')      
         print(f'sum_probability_selective:{sum(probability_selective)}\n\n')    
              
         self.prefix_sums = [0] * len(self.win)
         self.prefix_sums[0] = 0
         for i in range(1, len(self.win) - 1):
             self.prefix_sums[i] = self.prefix_sums[i - 1] + probability_selective[i-1]
+        self.prefix_sums[-1] = 1
             
         print(f'\n\sums:\n{self.sums}')      
         print(f'prefix_sums:\n{self.prefix_sums}') 

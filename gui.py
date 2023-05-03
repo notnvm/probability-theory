@@ -90,11 +90,11 @@ class Gui:
         max_deviation = 0
         # prob_res = []
         for i in range(r+1):
-            probability = (math.comb(m, (i+1))*math.comb(n-m, r-(i+1)))/math.comb(n,r)
+            probability = (math.comb(m, (i))*math.comb(n-m, r-(i)))/math.comb(n,r)
             # prob_res.append(probability)
             if math.fabs(first_task[i]/n - probability) > max_deviation:
                 max_deviation = first_task[i]/n - probability
-            self.probs_table.insert("", tk.END, values=((i+1), probability, first_task[i]/n))
+            self.probs_table.insert("", tk.END, values=((i), probability, first_task[i]/n))
         
         self.label_max_deviation = tk.Label(self.master, text=f'Величина max|n_j / n - P(n = y_j)| = {round(max_deviation, 4)}', foreground="white",background='#252526', font='Arial 12')
         self.label_max_deviation.place(x=0, y=180)  
