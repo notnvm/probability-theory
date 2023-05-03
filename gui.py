@@ -3,7 +3,7 @@ from tkinter import ttk
 import pt as task
 import math
 
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 
 class Gui:
@@ -117,7 +117,6 @@ class Gui:
             
         self.ax.plot((r-1, r), (1, 1), color='red', linewidth=2, label='F(x)')
         self.ax.plot((r-1, r), (1, 1), color='blue', linewidth=2, label='F^(x)')
-        # self.ax.plot((solution.series[-1][0], solution.series[-1][0] + 2), (1, 1), color='red', linewidth=2, label='F(x)')
 
         self.ax.grid(True)
         self.ax.legend()
