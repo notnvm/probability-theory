@@ -65,7 +65,8 @@ class Solution:
         self.prefix_sums = [0] * len(self.win)
         self.prefix_sums[0] = 0
         for i in range(1, len(self.win) - 1):
-            self.prefix_sums[i] = self.prefix_sums[i - 1] + probability_selective[i-1]
+            if self.prefix_sums[i - 1] + probability_selective[i-1] <= 1:
+                self.prefix_sums[i] = self.prefix_sums[i - 1] + probability_selective[i-1]
         self.prefix_sums[-1] = 1
             
         self.diff = 0

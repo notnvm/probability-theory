@@ -53,15 +53,14 @@ class Gui:
         self.ax.clear()
         self.ax.grid(True)
         self.ax.set_title("График функции распределения", color='white')
-        
-        
+           
         p = float(self.p_val.get())
         n = int(self.n_val.get())
         m = int(self.m_val.get())
         r = int(self.r_val.get())
+        
         solution = task.Solution(p, n, m, r)
         first_task = solution.first()
-        print(first_task)
         math_expect, average, diff_avg, dispersion, s2,  diff_disp, median, R = solution.second()
 
         heads = ["y_i", "n_i", "n_i / n"]
@@ -69,8 +68,8 @@ class Gui:
         for header in heads:
             self.table_ft.heading(header, text=header, anchor='center')
             self.table_ft.column(header, anchor='center', width=455)
-        for i in range(r+1):
-            self.table_ft.insert("", tk.END, values=(i, first_task[i], first_task[i]/n))
+        for y_i, n_i in first_task:
+            self.table_ft.insert("", tk.END, values=(y_i, n_i, n_i / n))
         self.scrollbary = tk.Scrollbar(self.master, orient=tk.VERTICAL)
         self.table_ft.configure(yscrollcommand=self.scrollbary.set)
         self.scrollbary.configure(command=self.table_ft.yview)
@@ -88,37 +87,24 @@ class Gui:
             self.probs_table.heading(part, text=part, anchor='center')
             self.probs_table.column(part, anchor='center', width=455)
         max_deviation = 0
-        # prob_res = []
-        for i in range(r+1):
-            probability = (math.comb(m, (i))*math.comb(n-m, r-(i)))/math.comb(n,r)
-            # prob_res.append(probability)
-            if math.fabs(first_task[i]/n - probability) > max_deviation:
-                max_deviation = first_task[i]/n - probability
-            self.probs_table.insert("", tk.END, values=((i), probability, first_task[i]/n))
-        
-        self.label_max_deviation = tk.Label(self.master, text=f'Величина max|n_j / n - P(n = y_j)| = {round(max_deviation, 4)}', foreground="white",background='#252526', font='Arial 12')
-        self.label_max_deviation.place(x=0, y=180)  
-         
-        # print(sum(prob_res))        
-        self.scrollbar = ttk.Scrollbar(self.master, orient=tk.VERTICAL)
-        self.table_ft.configure(yscrollcommand=self.scrollbar.set)
-        self.scrollbar.configure(command=self.probs_table.yview)
-        self.table_ft.place(x=320, y=0)
-        self.table_sd.place(x=320, y=110)
-        self.probs_table.place(x=320, y=180)
-        
+        for x_i, n_i in first_task:
+            probability = (math.comb(m, x_i)*math.comb(n-m, r-x_i))/math.comb(n,r)
+            if math.fabs(n_i/n - probability) > max_deviation:
+                max_deviation = n_i/n - probability
+            self.probs_table.insert("", tk.END, values=(x_i, probability, n_i/n))
+            
         solution.generate_plot_data()
         
         self.ax.plot((-2, 1), (0, 0), color='red', linewidth=2)
         self.ax.plot((-2, 1), (0, 0), color='blue', linewidth=2)
-        for i in range(r-1):
-            self.ax.plot((i, i+1), (solution.sums[i], solution.sums[i]),
+        for i in range(len(solution.series) - 1):
+             self.ax.plot((solution.series[i][0], solution.series[i + 1][0]), (solution.sums[i], solution.sums[i]),
                          color='red', linewidth=2)
-            self.ax.plot((i, i+1), (solution.prefix_sums[i], solution.prefix_sums[i]),
-                         color='blue', linewidth=2)
+             self.ax.plot((solution.series[i][0], solution.series[i + 1][0]), (solution.prefix_sums[i],
+                          solution.prefix_sums[i]), color='blue', linewidth=2)
             
-        self.ax.plot((r-1, r), (1, 1), color='red', linewidth=2, label='F(x)')
-        self.ax.plot((r-1, r), (1, 1), color='blue', linewidth=2, label='F^(x)')
+        self.ax.plot((solution.series[-1][0], solution.series[-1][0] + 2), (1, 1), color='red', linewidth=2, label='F(x)')
+        self.ax.plot((solution.series[-1][0], solution.series[-1][0] + 2), (1, 1), color='blue', linewidth=2, label='F^(x)')
 
         self.ax.grid(True)
         self.ax.legend()
@@ -128,6 +114,9 @@ class Gui:
         self.label_max_diff_f = tk.Label(self.master, text=f'Мера расхождения D = {round(solution.diff, 4)}', foreground="white",background='#252526', font='Arial 12')
         self.label_max_diff_f.place(x=0, y=200)  
         
+        self.table_ft.place(x=320, y=0)
+        self.table_sd.place(x=320, y=110)
+        self.probs_table.place(x=320, y=180)
         
 window = tk.Tk()
 gui = Gui(window)
