@@ -88,7 +88,7 @@ class Gui:
             self.probs_table.heading(part, text=part, anchor='center')
             self.probs_table.column(part, anchor='center', width=455)
         for xi, ni in first_task:
-            self.probs_table.insert("", tk.END, values=(xi, probability[first_task.index((xi,ni))], ni/m))
+            self.probs_table.insert("", tk.END, values=(xi, probability[first_task.index((xi,ni))], ni/p))
             
         self.table_ft.place(x=320, y=0)
         self.table_sd.place(x=320, y=110)
