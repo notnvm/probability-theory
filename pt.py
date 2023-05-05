@@ -107,7 +107,7 @@ class Solution:
              max|nj/n - P(ξ = xi)|
         """
         probability = self.probability()
-        relative_frequency = [i/self.m for _, i in self.series]
+        relative_frequency = [i/self.p for _, i in self.series]
         max_deviation = -100
         for i in range(len(probability)):
             if max_deviation < abs(relative_frequency[i] - probability[i]):
@@ -149,7 +149,7 @@ class Solution:
         """
         sdf = [0]
         for _, ni in self.series:
-            sdf.append(sdf[self.series.index((_, ni))] + ni/self.m)
+            sdf.append(sdf[self.series.index((_, ni))] + ni/self.p)
             
         # print(f'rel_freq = {[i for _,i in self.series]}')
         # print(f'sdf = {sdf}')
@@ -171,9 +171,9 @@ if __name__ == '__main__':
     s.first()
     # print(f's.first() = {s.first()}')
     # print(f's.first()[0][0] = {s.first()[0][0]}')
-    tdf = s.theoretical_distribution_function()
-    sdf = s.sample_distribution_function()
-    print(f'series.len = {len(s.series)}')
-    print(f'tdf.len = {len(tdf)}')
-    print(f'sdf.len = {len(sdf)}')
-    print('\n', sum(s.probability()))
+    # tdf = s.theoretical_distribution_function()
+    # sdf = s.sample_distribution_function()
+    # print(f'series.len = {len(s.series)}')
+    # print(f'tdf.len = {len(tdf)}')
+    # print(f'sdf.len = {len(sdf)}')
+    # print('\n', sum(s.probability()))
